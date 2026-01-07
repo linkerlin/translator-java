@@ -250,7 +250,14 @@ public class OpenAITranslationService implements TranslationService {
     
     private String callTranslationAPI(String text, TranslationProvider provider, TranslationProperties.ProviderConfig config) throws Exception {
         String baseUrl = normalizeBaseUrl(config.getBaseUrl());
-        String apiUrl = baseUrl + "/v1/chat/completions";
+        String apiUrl;
+        
+        // 如果baseUrl已经包含/v1，则不要重复添加
+        if (baseUrl.endsWith("/v1")) {
+            apiUrl = baseUrl + "/chat/completions";
+        } else {
+            apiUrl = baseUrl + "/v1/chat/completions";
+        }
         
         logger.debug("调用翻译API - URL: {}, Provider: {}, Model: {}", apiUrl, provider.getName(), config.getModel());
         

@@ -154,8 +154,14 @@ public class ConfigValidationTool {
      */
     private boolean testConnection(String baseUrl, String serviceName) {
         try {
+            // 规范化Base URL：去掉尾部斜杠
+            String normalizedBaseUrl = baseUrl != null ? baseUrl.trim() : "";
+            if (normalizedBaseUrl.endsWith("/")) {
+                normalizedBaseUrl = normalizedBaseUrl.substring(0, normalizedBaseUrl.length() - 1);
+            }
+            
             // 尝试访问根路径或API基础路径
-            String testUrl = baseUrl;
+            String testUrl = normalizedBaseUrl;
             if (!testUrl.endsWith("/v1") && !testUrl.endsWith("/openai")) {
                 testUrl = testUrl + "/v1";
             }
