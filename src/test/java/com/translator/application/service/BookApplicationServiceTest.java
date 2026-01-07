@@ -235,4 +235,44 @@ public class BookApplicationServiceTest {
         verify(bookRepository).findById(bookId);
         verify(bookRepository, never()).delete(any());
     }
+    
+    @Test
+    void testTranslateBookFallbackToDeepSeek() throws TranslationException {
+        // 准备测试数据
+        String filePath = "/path/to/test.epub";
+        String outputDir = "/output/dir";
+        TranslationProvider provider = TranslationProvider.OPENAI;
+        
+        TranslateBookCommand command = new TranslateBookCommand(filePath, provider, outputDir);
+        
+        Book mockBook = new Book("test.epub");
+        
+        // 设置模拟行为
+        when(epubProcessingService.parseEpub(filePath)).thenReturn(mockBook);
+        when(translationService.isServiceAvailable(provider)).thenReturn(true);
+        when(bookRepository.save(any(Book.class))).thenReturn(mockBook);
+        
+        // 模拟OpenAI失败
+        doThrow(new TranslationException("OpenAI Limit Exceeded"))
+            .when(translationService).translateBook(mockBook, TranslationProvider.OPENAI);
+            
+        // 模拟DeepSeek可用并成功
+        when(translationService.isServiceAvailable(TranslationProvider.DEEPSEEK)).thenReturn(true);
+        doNothing().when(translationService).translateBook(mockBook, TranslationProvider.DEEPSEEK);
+        
+        when(epubProcessingService.createTranslatedEpub(any(Book.class), eq(outputDir)))
+            .thenReturn("/output/dir/test 中文版.epub");
+            
+        // 执行测试
+        BookDto result = bookService.translateBook(command);
+        
+        // 验证结果
+        assertNotNull(result);
+        assertEquals("/output/dir/test 中文版.epub", result.getOutputPath());
+        
+        // 验证交互
+        verify(translationService).translateBook(mockBook, TranslationProvider.OPENAI);
+        verify(translationService).isServiceAvailable(TranslationProvider.DEEPSEEK);
+        verify(translationService).translateBook(mockBook, TranslationProvider.DEEPSEEK);
+    }
 }

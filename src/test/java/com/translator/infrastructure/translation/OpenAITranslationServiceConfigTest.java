@@ -80,7 +80,7 @@ public class OpenAITranslationServiceConfigTest {
         // 测试有效配置
         when(openaiConfig.getBaseUrl()).thenReturn("https://api.openai.com");
         when(openaiConfig.getApiKey()).thenReturn("sk-test-api-key");
-        when(openaiConfig.getModel()).thenReturn("gpt-3.5-turbo");
+        when(openaiConfig.getModel()).thenReturn("qwen-plus");
         
         // 不应该抛出异常
         assertDoesNotThrow(() -> {
@@ -133,23 +133,6 @@ public class OpenAITranslationServiceConfigTest {
         
         String normalizedUrl = (String) normalizeMethod.invoke(translationService, "https://custom-api.example.com");
         assertEquals("https://custom-api.example.com", normalizedUrl);
-    }
-    
-    @Test
-    void testAzureOpenAiConfiguration() throws Exception {
-        // 测试Azure OpenAI配置
-        when(openaiConfig.getBaseUrl()).thenReturn("https://your-resource.openai.azure.com/openai");
-        when(openaiConfig.getApiKey()).thenReturn("your-azure-api-key");
-        when(openaiConfig.getModel()).thenReturn("gpt-35-turbo"); // Azure使用gpt-35-turbo
-        
-        // 验证配置可以通过验证
-        Method validateMethod = OpenAITranslationService.class.getDeclaredMethod("validateApiConfig", 
-            TranslationProperties.ProviderConfig.class, TranslationProvider.class);
-        validateMethod.setAccessible(true);
-        
-        assertDoesNotThrow(() -> {
-            validateMethod.invoke(translationService, openaiConfig, TranslationProvider.OPENAI);
-        });
     }
     
     @Test

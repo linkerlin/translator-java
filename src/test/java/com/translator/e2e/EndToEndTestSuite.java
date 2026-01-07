@@ -10,12 +10,7 @@ package com.translator.e2e;
  *    - 验证自定义Base URL配置
  *    - 测试配置验证功能
  * 
- * 2. AzureOpenAIE2ETest - Azure OpenAI测试  
- *    - 测试Azure OpenAI服务的完整翻译流程
- *    - 验证Azure特定的配置格式
- *    - 测试Azure配置检测和验证
- * 
- * 3. ConfigurationValidationE2ETest - 配置验证测试
+ * 2. ConfigurationValidationE2ETest - 配置验证测试
  *    - 测试完整配置验证流程
  *    - 验证不同Base URL格式的处理
  *    - 测试配置错误处理和网络连接验证
@@ -33,7 +28,6 @@ package com.translator.e2e;
  * 运行要求：
  * - 需要设置相应的API密钥环境变量
  * - 标准测试：OPENAI_API_KEY
- * - Azure测试：AZURE_OPENAI_API_KEY
  * - 其他测试会在没有API密钥时跳过实际的API调用
  * 
  * 运行所有测试:

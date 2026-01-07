@@ -14,14 +14,16 @@ import java.util.UUID;
 public class Book {
     private final String id;
     private final String originalFileName;
+    private final String sourceFilePath;
     private String translatedFileName;
     private BookMetadata metadata;
     private List<Page> pages;
     private TranslationStatus translationStatus;
 
-    public Book(String originalFileName) {
+    public Book(String sourceFilePath) {
         this.id = UUID.randomUUID().toString();
-        this.originalFileName = originalFileName;
+        this.sourceFilePath = sourceFilePath;
+        this.originalFileName = new java.io.File(sourceFilePath).getName();
         this.pages = new ArrayList<>();
         this.translationStatus = TranslationStatus.PENDING;
         generateTranslatedFileName();
@@ -80,6 +82,10 @@ public class Book {
 
     public String getOriginalFileName() {
         return originalFileName;
+    }
+
+    public String getSourceFilePath() {
+        return sourceFilePath;
     }
 
     public String getTranslatedFileName() {

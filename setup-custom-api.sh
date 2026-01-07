@@ -28,13 +28,12 @@ echo ""
 echo "请选择配置选项:"
 echo "1. 配置OpenAI自定义API地址"
 echo "2. 配置DeepSeek自定义API地址"
-echo "3. 配置Azure OpenAI服务"
-echo "4. 查看配置示例"
-echo "5. 清除所有配置"
-echo "6. 退出"
+echo "3. 查看配置示例"
+echo "4. 清除所有配置"
+echo "5. 退出"
 echo ""
 
-read -p "请输入选项 (1-6): " choice
+read -p "请输入选项 (1-5): " choice
 
 case $choice in
     1)
@@ -109,67 +108,26 @@ case $choice in
     
     3)
         echo ""
-        echo "配置Azure OpenAI服务:"
-        echo "Azure OpenAI的URL格式通常为: https://your-resource.openai.azure.com/openai"
-        read -p "请输入Azure OpenAI密钥: " api_key
-        read -p "请输入Azure OpenAI Base URL: " base_url
-        read -p "请输入部署名称 (如: gpt-35-turbo): " model
-        
-        echo ""
-        echo "配置信息:"
-        echo "API密钥: ${api_key:0:10}..."
-        echo "Base URL: $base_url"
-        echo "部署名称: $model"
-        
-        read -p "确认配置？(y/N): " -n 1 -r
-        echo
-        
-        if [[ $REPLY =~ ^[Yy]$ ]]; then
-            export OPENAI_API_KEY="$api_key"
-            export OPENAI_BASE_URL="$base_url"
-            export OPENAI_MODEL="$model"
-            export OPENAI_MAX_TOKENS="2000"
-            export OPENAI_TEMPERATURE="0.3"
-            
-            echo ""
-            echo "✓ Azure OpenAI配置已保存到当前会话"
-            echo ""
-            echo "要使配置永久生效，请将以下内容添加到 ~/.bashrc 或 ~/.zshrc:"
-            echo "export OPENAI_API_KEY=\"$api_key\""
-            echo "export OPENAI_BASE_URL=\"$base_url\""
-            echo "export OPENAI_MODEL=\"$model\""
-            echo "export OPENAI_MAX_TOKENS=\"2000\""
-            echo "export OPENAI_TEMPERATURE=\"0.3\""
-        fi
-        ;;
-    
-    4)
-        echo ""
         echo "=== 配置示例 ==="
         echo ""
         echo "1. 标准OpenAI配置:"
         echo "export OPENAI_API_KEY=\"your-openai-api-key\""
         echo "export OPENAI_BASE_URL=\"https://api.openai.com\""
         echo ""
-        echo "2. Azure OpenAI配置:"
-        echo "export OPENAI_API_KEY=\"your-azure-api-key\""
-        echo "export OPENAI_BASE_URL=\"https://your-resource.openai.azure.com/openai\""
-        echo "export OPENAI_MODEL=\"gpt-35-turbo\""
-        echo ""
-        echo "3. 国内代理配置:"
+        echo "2. 国内代理配置:"
         echo "export OPENAI_API_KEY=\"your-proxy-api-key\""
         echo "export OPENAI_BASE_URL=\"https://api.openai-proxy.org\""
         echo ""
-        echo "4. 自定义参数配置:"
+        echo "3. 自定义参数配置:"
         echo "export OPENAI_MAX_TOKENS=\"2000\""
         echo "export OPENAI_TEMPERATURE=\"0.3\""
         echo ""
-        echo "5. DeepSeek配置:"
+        echo "4. DeepSeek配置:"
         echo "export DEEPSEEK_API_KEY=\"your-deepseek-api-key\""
         echo "export DEEPSEEK_BASE_URL=\"https://api.deepseek.com\""
         ;;
     
-    5)
+    4)
         echo ""
         echo "清除所有配置..."
         unset OPENAI_API_KEY
@@ -183,7 +141,7 @@ case $choice in
         echo "✓ 所有配置已清除"
         ;;
     
-    6)
+    5)
         echo "退出配置脚本"
         exit 0
         ;;

@@ -4,7 +4,7 @@ package com.translator.domain.valueobject;
  * 翻译提供商枚举
  */
 public enum TranslationProvider {
-    OPENAI("OpenAI", "GPT-3.5-Turbo"),
+    OPENAI("OpenAI","qwen-plus"),
     DEEPSEEK("DeepSeek", "DeepSeek-Chat");
 
     private final String name;

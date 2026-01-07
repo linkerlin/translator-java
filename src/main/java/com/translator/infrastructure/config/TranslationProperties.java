@@ -84,7 +84,7 @@ public class TranslationProperties {
     
     public static class TranslationSettings {
         private String defaultProvider = "openai";
-        private int batchSize = 2000;
+        private int batchSize = 1;
         private int retryCount = 3;
         private long retryDelay = 1000;
         

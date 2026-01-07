@@ -84,17 +84,11 @@ export DEEPSEEK_TEMPERATURE="0.3"                    # 可选，温度参数
 #### 自定义OpenAI API地址
 
 支持使用自定义的OpenAI兼容API服务，如：
-- Azure OpenAI Service
 - 国内代理服务
 - 其他OpenAI兼容的API服务
 
 示例：
 ```bash
-# 使用Azure OpenAI
-export OPENAI_BASE_URL="https://your-resource.openai.azure.com/openai"
-export OPENAI_API_KEY="your-azure-api-key"
-export OPENAI_MODEL="gpt-35-turbo"
-
 # 使用国内代理
 export OPENAI_BASE_URL="https://api.openai-proxy.org"
 export OPENAI_API_KEY="your-proxy-api-key"
@@ -177,14 +171,9 @@ java -jar target/epub-translator-1.0.0.jar
 
 **步骤1: 配置自定义OpenAI API地址**
 ```bash
-# 使用Azure OpenAI服务
-export OPENAI_BASE_URL="https://your-resource.openai.azure.com/openai"
-export OPENAI_API_KEY="your-azure-api-key"
-export OPENAI_MODEL="gpt-35-turbo"
-
-# 或者使用配置脚本
+# 使用配置脚本
 ./setup-custom-api.sh
-# 选择选项3，按照提示输入Azure OpenAI配置
+# 选择选项1，按照提示输入自定义配置
 ```
 
 **步骤2: 验证配置**
@@ -344,11 +333,6 @@ mvn test -Dtest=BookApplicationServiceTest
 
 **常见自定义API配置**:
 ```bash
-# Azure OpenAI
-export OPENAI_BASE_URL="https://your-resource.openai.azure.com/openai"
-export OPENAI_API_KEY="your-azure-api-key"
-export OPENAI_MODEL="gpt-35-turbo"  # 注意是gpt-35-turbo，不是gpt-3.5-turbo
-
 # 国内代理服务
 export OPENAI_BASE_URL="https://api.openai-proxy.org"
 export OPENAI_API_KEY="your-proxy-api-key"

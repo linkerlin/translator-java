@@ -64,7 +64,30 @@ public class BookApplicationService {
         // 5. 执行翻译
         book.markTranslationStarted();
         try {
-            translationService.translateBook(book, provider);
+            try {
+                logger.info("尝试使用主要提供商 {} 进行翻译...", provider.getName());
+                translationService.translateBook(book, provider);
+            } catch (Exception e) {
+                // 如果是OPENAI且失败，尝试使用DEEPSEEK作为备用
+                if (provider == TranslationProvider.OPENAI) {
+                    logger.warn("主要提供商 {} 翻译失败: {}。尝试使用 DeepSeek 作为备用...", provider.getName(), e.getMessage());
+                    
+                    if (translationService.isServiceAvailable(TranslationProvider.DEEPSEEK)) {
+                        try {
+                            translationService.translateBook(book, TranslationProvider.DEEPSEEK);
+                            logger.info("使用备用提供商 DeepSeek 翻译成功");
+                        } catch (Exception deepseekError) {
+                            logger.error("备用提供商 DeepSeek 也翻译失败: {}", deepseekError.getMessage());
+                            throw e; // 抛出原始异常
+                        }
+                    } else {
+                        logger.warn("备用提供商 DeepSeek 不可用，无法进行故障转移");
+                        throw e;
+                    }
+                } else {
+                    throw e;
+                }
+            }
             book.markTranslationCompleted();
             logger.info("书籍翻译完成: {}", book.getOriginalFileName());
         } catch (Exception e) {

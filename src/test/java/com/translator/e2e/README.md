@@ -66,7 +66,7 @@
 # 标准OpenAI测试
 export OPENAI_API_KEY="your-openai-api-key"
 export OPENAI_BASE_URL="https://api.openai.com"
-export OPENAI_MODEL="gpt-3.5-turbo"
+export OPENAI_MODEL="qwen-plus"
 
 # Azure OpenAI测试
 export AZURE_OPENAI_API_KEY="your-azure-api-key"

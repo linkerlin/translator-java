@@ -393,8 +393,6 @@ public class SimpleMainFrame extends JFrame {
         
         if (baseUrl.contains("openai.com")) {
             log("✓ 标准OpenAI配置检测");
-        } else if (baseUrl.contains("azure")) {
-            log("✓ Azure OpenAI配置检测");
         } else if (baseUrl.contains("deepseek")) {
             log("✓ DeepSeek配置检测");
         } else {
@@ -416,7 +414,7 @@ public class SimpleMainFrame extends JFrame {
         config.append("OpenAI配置:\n");
         config.append("  API密钥: ").append(openaiKey != null ? "已配置" : "未配置").append("\n");
         config.append("  Base URL: ").append(openaiBaseUrl != null ? openaiBaseUrl : "https://api.openai.com (默认)").append("\n");
-        config.append("  模型: ").append(openaiModel != null ? openaiModel : "gpt-3.5-turbo (默认)").append("\n\n");
+        config.append("  模型: ").append(openaiModel != null ? openaiModel : "qwen-plus (默认)").append("\n\n");
         
         // DeepSeek配置
         String deepseekKey = System.getenv("DEEPSEEK_API_KEY");
@@ -442,7 +440,6 @@ public class SimpleMainFrame extends JFrame {
             "支持OpenAI和DeepSeek翻译API\n\n" +
             "功能特点:\n" +
             "• 支持自定义OpenAI API地址\n" +
-            "• 支持Azure OpenAI服务\n" +
             "• 支持国内代理服务\n" +
             "• 实时配置验证\n\n" +
             "© 2024 EPUB翻译器项目\n\n" +
@@ -478,7 +475,7 @@ public class SimpleMainFrame extends JFrame {
         
         info.append("OpenAI配置:\n");
         info.append("Base URL: ").append(openaiBaseUrl != null ? openaiBaseUrl : "https://api.openai.com (默认)").append("\n");
-        info.append("模型: ").append(openaiModel != null ? openaiModel : "gpt-3.5-turbo (默认)").append("\n");
+        info.append("模型: ").append(openaiModel != null ? openaiModel : "qwen-plus (默认)").append("\n");
         info.append("API密钥: ").append(openaiKey != null ? "已配置" : "未配置").append("\n\n");
         
         // DeepSeek配置
