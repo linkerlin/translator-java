@@ -19,6 +19,9 @@ public class EpubTranslatorApplication {
     private static final Logger logger = LoggerFactory.getLogger(EpubTranslatorApplication.class);
     
     public static void main(String[] args) {
+        // 确保GUI可以运行
+        System.setProperty("java.awt.headless", "false");
+        
         ConfigurableApplicationContext context = SpringApplication.run(EpubTranslatorApplication.class, args);
         
         // 在应用启动后进行配置验证

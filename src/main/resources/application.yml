@@ -1,4 +1,6 @@
 spring:
+  main:
+    headless: false
   application:
     name: epub-translator
 
