@@ -37,6 +37,8 @@ public class OpenAITranslationService implements TranslationService {
         this.properties = properties;
         this.promptService = promptService;
         this.objectMapper = new ObjectMapper();
+        this.objectMapper.configure(com.fasterxml.jackson.core.JsonParser.Feature.ALLOW_COMMENTS, true);
+        this.objectMapper.configure(com.fasterxml.jackson.core.JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
         this.httpClient = HttpClients.createDefault();
         
         // 记录配置信息
@@ -303,7 +305,7 @@ public class OpenAITranslationService implements TranslationService {
         
         try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
             int statusCode = response.getCode();
-            String responseBody = new String(response.getEntity().getContent().readAllBytes());
+            String responseBody = new String(response.getEntity().getContent().readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
             
             if (statusCode != 200) {
                 throw new TranslationException("API调用失败: HTTP " + statusCode + " - " + responseBody);
