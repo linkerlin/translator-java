@@ -31,9 +31,11 @@ public class OpenAITranslationService implements TranslationService {
     private final TranslationProperties properties;
     private final ObjectMapper objectMapper;
     private final CloseableHttpClient httpClient;
+    private final PromptService promptService;
     
-    public OpenAITranslationService(TranslationProperties properties) {
+    public OpenAITranslationService(TranslationProperties properties, PromptService promptService) {
         this.properties = properties;
+        this.promptService = promptService;
         this.objectMapper = new ObjectMapper();
         this.httpClient = HttpClients.createDefault();
         
@@ -170,16 +172,25 @@ public class OpenAITranslationService implements TranslationService {
         // 翻译合并后的内容
         String translatedContent = translateText(combinedContent.toString(), provider);
         
-        // 分割翻译结果并分配给各个页面
-        for (int i = 0; i < pages.size(); i++) {
-            int start = pageBoundaries.get(i);
-            int end = pageBoundaries.get(i + 1);
-            String pageTranslation = translatedContent.substring(start, end);
-            
-            // 移除页面分隔符
-            pageTranslation = pageTranslation.replaceAll("--- PAGE BREAK ---", "").trim();
-            
+        // 使用分隔符分割翻译结果
+        // 注意：大模型可能会在分隔符前后添加额外的空白字符，或者稍微改变分隔符格式
+        // 这里使用正则表达式来稍微放宽匹配条件
+        String[] segments = translatedContent.split("\\s*--- PAGE BREAK ---\\s*");
+        
+        if (segments.length != pages.size()) {
+            logger.warn("翻译结果的分段数量({})与页面数量({})不匹配。尝试按顺序分配，但这可能导致内容错位。", 
+                segments.length, pages.size());
+        }
+        
+        // 分配翻译结果
+        for (int i = 0; i < Math.min(pages.size(), segments.length); i++) {
+            String pageTranslation = segments[i].trim();
             pages.get(i).translate(pageTranslation);
+        }
+        
+        // 如果分段少于页面数，剩下的页面可能没有被翻译
+        if (segments.length < pages.size()) {
+            logger.warn("有 {} 个页面未能在批量翻译中获得结果，保持原文。", pages.size() - segments.length);
         }
     }
     
@@ -230,7 +241,7 @@ public class OpenAITranslationService implements TranslationService {
             try {
                 return callTranslationAPI(text, provider, config);
             } catch (Exception e) {
-                logger.warn("翻译API调用失败 (尝试 {}/{}): {}", attempt, retryCount, e.getMessage());
+                logger.warn("LLM API调用失败 (尝试 {}/{}): {}", attempt, retryCount, e.getMessage());
                 
                 if (attempt < retryCount) {
                     try {
@@ -240,7 +251,7 @@ public class OpenAITranslationService implements TranslationService {
                         throw new TranslationException("翻译被中断", ie);
                     }
                 } else {
-                    throw new TranslationException("翻译API调用失败，已重试" + retryCount + "次: " + e.getMessage(), e);
+                    throw new TranslationException("LLM API调用失败，已重试" + retryCount + "次: " + e.getMessage(), e);
                 }
             }
         }
@@ -259,7 +270,7 @@ public class OpenAITranslationService implements TranslationService {
             apiUrl = baseUrl + "/v1/chat/completions";
         }
         
-        logger.debug("调用翻译API - URL: {}, Provider: {}, Model: {}", apiUrl, provider.getName(), config.getModel());
+        logger.debug("调用 LLM API - URL: {}, Provider: {}, Model: {}", apiUrl, provider.getName(), config.getModel());
         
         // 构建OpenAI API请求
         Map<String, Object> requestBody = new HashMap<>();
@@ -272,7 +283,7 @@ public class OpenAITranslationService implements TranslationService {
         // 系统消息
         Map<String, String> systemMessage = new HashMap<>();
         systemMessage.put("role", "system");
-        systemMessage.put("content", "You are a professional translator. Translate the following English text to Chinese. Preserve the HTML structure and formatting. Only return the translated text without any explanations.");
+        systemMessage.put("content", promptService.getSystemPrompt());
         messages.add(systemMessage);
         
         // 用户消息

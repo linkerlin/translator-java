@@ -100,6 +100,9 @@ public class CompleteTranslationE2ETest extends EndToEndTestBase {
     void testTranslationWithDifferentBaseUrls() throws Exception {
         System.out.println("=== 测试不同Base URL的翻译流程 ===");
         
+        // 保存原始配置以便恢复
+        String originalBaseUrl = translationProperties.getApi().getOpenai().getBaseUrl();
+        
         // 测试不同的Base URL配置
         String[] testUrls = {
             "https://api.openai.com",
@@ -107,41 +110,48 @@ public class CompleteTranslationE2ETest extends EndToEndTestBase {
             "https://azure-resource.openai.azure.com/openai"
         };
         
-        for (String baseUrl : testUrls) {
-            System.out.println("测试Base URL: " + baseUrl);
-            
-            // 设置测试Base URL
-            System.setProperty("OPENAI_BASE_URL", baseUrl);
-            
-            try {
-                // 创建测试文件
-                File testEpub = createTestEpubFile("base-url-test-" + baseUrl.hashCode());
+        try {
+            for (String baseUrl : testUrls) {
+                System.out.println("测试Base URL: " + baseUrl);
+                
+                // 直接修改配置Bean，以便即时生效
+                translationProperties.getApi().getOpenai().setBaseUrl(baseUrl);
                 
                 try {
-                    // 执行翻译流程
-                    TranslateBookCommand command = new TranslateBookCommand(
-                        testEpub.getAbsolutePath(),
-                        TranslationProvider.OPENAI,
-                        System.getProperty("java.io.tmpdir")
-                    );
+                    // 创建测试文件
+                    File testEpub = createTestEpubFile("base-url-test-" + baseUrl.hashCode());
                     
-                    // 如果API密钥无效，应该抛出异常
-                    assertThrows(Exception.class, () -> {
-                        bookApplicationService.translateBook(command);
-                    }, "使用无效的API应该抛出异常");
-                    
-                    System.out.println("✓ Base URL \"" + baseUrl + "\" 测试完成");
-                    
-                } finally {
-                    if (testEpub.exists()) {
-                        testEpub.delete();
+                    try {
+                        // 执行翻译流程
+                        TranslateBookCommand command = new TranslateBookCommand(
+                            testEpub.getAbsolutePath(),
+                            TranslationProvider.OPENAI,
+                            System.getProperty("java.io.tmpdir")
+                        );
+                        
+                        // 如果API密钥无效或网络不通，应该抛出异常
+                        // 注意：这里我们期望失败，因为这些URL要么不可达，要么没有有效的API Key
+                        assertThrows(Exception.class, () -> {
+                            bookApplicationService.translateBook(command);
+                        }, "使用无效的API应该抛出异常");
+                        
+                        System.out.println("✓ Base URL \"" + baseUrl + "\" 测试完成");
+                        
+                    } finally {
+                        if (testEpub.exists()) {
+                            testEpub.delete();
+                        }
                     }
+                } catch (Exception e) {
+                    // 如果测试过程中出现非预期的异常（如文件创建失败），记录并抛出
+                    System.err.println("测试过程出错: " + e.getMessage());
+                    throw e;
                 }
-                
-            } finally {
-                // 清理系统属性
-                System.clearProperty("OPENAI_BASE_URL");
             }
+        } finally {
+            // 恢复原始配置
+            translationProperties.getApi().getOpenai().setBaseUrl(originalBaseUrl);
+            System.clearProperty("OPENAI_BASE_URL");
         }
         
         System.out.println("✅ 不同Base URL翻译流程测试通过！");

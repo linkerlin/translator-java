@@ -32,6 +32,9 @@ public class OpenAITranslationServiceConfigTest {
     @Mock
     private TranslationProperties.ProviderConfig deepseekConfig;
     
+    @Mock
+    private PromptService promptService;
+    
     private OpenAITranslationService translationService;
     
     @BeforeEach
@@ -40,7 +43,7 @@ public class OpenAITranslationServiceConfigTest {
         when(apiConfig.getOpenai()).thenReturn(openaiConfig);
         when(apiConfig.getDeepseek()).thenReturn(deepseekConfig);
         
-        translationService = new OpenAITranslationService(properties);
+        translationService = new OpenAITranslationService(properties, promptService);
     }
     
     @Test
@@ -163,7 +166,7 @@ public class OpenAITranslationServiceConfigTest {
         when(deepseekConfig.getApiKey()).thenReturn("deepseek-test-key");
         
         // 重新创建服务实例以触发配置日志
-        OpenAITranslationService serviceWithConfig = new OpenAITranslationService(properties);
+        OpenAITranslationService serviceWithConfig = new OpenAITranslationService(properties, promptService);
         
         // 验证服务创建成功（配置日志会在构造函数中输出）
         assertNotNull(serviceWithConfig);
