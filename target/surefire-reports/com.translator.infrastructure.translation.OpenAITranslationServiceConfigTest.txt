@@ -1,0 +1,30 @@
+-------------------------------------------------------------------------------
+Test set: com.translator.infrastructure.translation.OpenAITranslationServiceConfigTest
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.196 s <<< FAILURE! -- in com.translator.infrastructure.translation.OpenAITranslationServiceConfigTest
+com.translator.infrastructure.translation.OpenAITranslationServiceConfigTest.testAzureOpenAiConfiguration -- Time elapsed: 0.181 s <<< ERROR!
+org.mockito.exceptions.misusing.UnnecessaryStubbingException: 
+
+Unnecessary stubbings detected.
+Clean & maintainable test code requires zero unnecessary code.
+Following stubbings are unnecessary (click to navigate to relevant line of code):
+  1. -> at com.translator.infrastructure.translation.OpenAITranslationServiceConfigTest.testAzureOpenAiConfiguration(OpenAITranslationServiceConfigTest.java:143)
+  2. -> at com.translator.infrastructure.translation.OpenAITranslationServiceConfigTest.testAzureOpenAiConfiguration(OpenAITranslationServiceConfigTest.java:144)
+Please remove unnecessary stubbings or use 'lenient' strictness. More info: javadoc for UnnecessaryStubbingException class.
+	at org.mockito.junit.jupiter.MockitoExtension.afterEach(MockitoExtension.java:192)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+com.translator.infrastructure.translation.OpenAITranslationServiceConfigTest.testCustomBaseUrlConfiguration -- Time elapsed: 0.003 s <<< ERROR!
+org.mockito.exceptions.misusing.UnnecessaryStubbingException: 
+
+Unnecessary stubbings detected.
+Clean & maintainable test code requires zero unnecessary code.
+Following stubbings are unnecessary (click to navigate to relevant line of code):
+  1. -> at com.translator.infrastructure.translation.OpenAITranslationServiceConfigTest.testCustomBaseUrlConfiguration(OpenAITranslationServiceConfigTest.java:117)
+  2. -> at com.translator.infrastructure.translation.OpenAITranslationServiceConfigTest.testCustomBaseUrlConfiguration(OpenAITranslationServiceConfigTest.java:118)
+Please remove unnecessary stubbings or use 'lenient' strictness. More info: javadoc for UnnecessaryStubbingException class.
+	at org.mockito.junit.jupiter.MockitoExtension.afterEach(MockitoExtension.java:192)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+

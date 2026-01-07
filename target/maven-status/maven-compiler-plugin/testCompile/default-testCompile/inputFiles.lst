@@ -1,0 +1,11 @@
+/Users/linmiao/code/translator-java/src/test/java/com/translator/e2e/StandardOpenAIE2ETest.java
+/Users/linmiao/code/translator-java/src/test/java/com/translator/e2e/AzureOpenAIE2ETest.java
+/Users/linmiao/code/translator-java/src/test/java/com/translator/e2e/ConfigurationValidationE2ETest.java
+/Users/linmiao/code/translator-java/src/test/java/com/translator/e2e/EndToEndTestBase.java
+/Users/linmiao/code/translator-java/src/test/java/com/translator/infrastructure/translation/OpenAITranslationServiceConfigTest.java
+/Users/linmiao/code/translator-java/src/test/java/com/translator/e2e/EndToEndTestSuite.java
+/Users/linmiao/code/translator-java/src/test/java/com/translator/e2e/PerformanceE2ETest.java
+/Users/linmiao/code/translator-java/src/test/java/com/translator/application/service/BookApplicationServiceTest.java
+/Users/linmiao/code/translator-java/src/test/java/com/translator/e2e/ConfigOnlyE2ETest.java
+/Users/linmiao/code/translator-java/src/test/java/com/translator/domain/model/BookTest.java
+/Users/linmiao/code/translator-java/src/test/java/com/translator/e2e/CompleteTranslationE2ETest.java

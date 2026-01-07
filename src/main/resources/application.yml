@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: epub-translator
+
+# 翻译API配置
+translation:
+  api:
+    # OpenAI兼容API配置
+    openai:
+      base-url: ${OPENAI_BASE_URL:https://api.openai.com}
+      api-key: ${OPENAI_API_KEY:}
+      model: ${OPENAI_MODEL:gpt-3.5-turbo}
+      max-tokens: ${OPENAI_MAX_TOKENS:2000}
+      temperature: ${OPENAI_TEMPERATURE:0.3}
+    
+    # DeepSeek API配置
+    deepseek:
+      base-url: ${DEEPSEEK_BASE_URL:https://api.deepseek.com}
+      api-key: ${DEEPSEEK_API_KEY:}
+      model: ${DEEPSEEK_MODEL:deepseek-chat}
+      max-tokens: ${DEEPSEEK_MAX_TOKENS:2000}
+      temperature: ${DEEPSEEK_TEMPERATURE:0.3}
+
+# 翻译设置
+translation-settings:
+  # 默认翻译服务: openai 或 deepseek
+  default-provider: openai
+  # 批处理大小（每批翻译的字符数）
+  batch-size: 2000
+  # 重试次数
+  retry-count: 3
+  # 重试间隔（毫秒）
+  retry-delay: 1000
+
+# 日志配置
+logging:
+  level:
+    com.translator: DEBUG
+    root: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
