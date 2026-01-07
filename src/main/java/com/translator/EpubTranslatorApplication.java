@@ -29,6 +29,11 @@ public class EpubTranslatorApplication {
         }
     }
     
+    @org.springframework.context.annotation.Bean
+    public ConfigValidationTool configValidationTool(TranslationProperties properties) {
+        return new ConfigValidationTool(properties);
+    }
+    
     /**
      * 验证应用配置
      */

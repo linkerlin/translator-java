@@ -2,11 +2,16 @@ package com.translator.e2e;
 
 import com.translator.EpubTranslatorApplication;
 import com.translator.infrastructure.config.TranslationProperties;
+import com.translator.presentation.controller.MainController;
+import com.translator.presentation.gui.EnhancedMainFrame;
+import com.translator.presentation.gui.MainFrame;
+import com.translator.presentation.gui.SimpleMainFrame;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -27,6 +32,19 @@ public abstract class EndToEndTestBase {
     
     @Autowired
     protected TranslationProperties translationProperties;
+    
+    // Mock GUI components to prevent HeadlessException in test environment
+    @MockBean
+    protected SimpleMainFrame simpleMainFrame;
+    
+    @MockBean
+    protected MainFrame mainFrame;
+    
+    @MockBean
+    protected EnhancedMainFrame enhancedMainFrame;
+    
+    @MockBean
+    protected MainController mainController;
     
     @BeforeEach
     void setUp() {

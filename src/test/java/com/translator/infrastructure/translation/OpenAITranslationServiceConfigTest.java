@@ -114,8 +114,6 @@ public class OpenAITranslationServiceConfigTest {
         when(openaiConfig.getBaseUrl()).thenReturn("https://custom-api.example.com");
         when(openaiConfig.getApiKey()).thenReturn("custom-api-key");
         when(openaiConfig.getModel()).thenReturn("custom-model");
-        when(openaiConfig.getMaxTokens()).thenReturn(2000);
-        when(openaiConfig.getTemperature()).thenReturn(0.3);
         
         // 验证配置可以通过验证
         Method validateMethod = OpenAITranslationService.class.getDeclaredMethod("validateApiConfig", 
@@ -140,8 +138,6 @@ public class OpenAITranslationServiceConfigTest {
         when(openaiConfig.getBaseUrl()).thenReturn("https://your-resource.openai.azure.com/openai");
         when(openaiConfig.getApiKey()).thenReturn("your-azure-api-key");
         when(openaiConfig.getModel()).thenReturn("gpt-35-turbo"); // Azure使用gpt-35-turbo
-        when(openaiConfig.getMaxTokens()).thenReturn(2000);
-        when(openaiConfig.getTemperature()).thenReturn(0.3);
         
         // 验证配置可以通过验证
         Method validateMethod = OpenAITranslationService.class.getDeclaredMethod("validateApiConfig", 

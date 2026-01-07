@@ -124,8 +124,8 @@ public class BookApplicationServiceTest {
     @Test
     void testGetTranslationProgress() {
         // 准备测试数据
-        String bookId = "test-book-id";
         Book mockBook = new Book("test.epub");
+        String bookId = mockBook.getId();
         
         // 添加一些页面并模拟翻译进度
         for (int i = 1; i <= 5; i++) {
@@ -174,8 +174,8 @@ public class BookApplicationServiceTest {
     @Test
     void testGetBook() {
         // 准备测试数据
-        String bookId = "test-book-id";
         Book mockBook = new Book("test.epub");
+        String bookId = mockBook.getId();
         BookMetadata metadata = new BookMetadata(
             "Test Book",
             Arrays.asList("Test Author"),
